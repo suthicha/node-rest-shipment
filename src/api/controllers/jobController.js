@@ -4,7 +4,13 @@ const NAME = "jobcontroller";
 
 exports.find = (req, res, next) => {
     try {
-        Job.find(req.params.etd, (data, error) => {
+        const filter = {
+            type: req.params.refno? 'ref':'etd',
+            etd: req.params.etd,
+            refno: req.params.refno? req.params.refno:''
+        };
+
+        Job.find(filter, (data, error) => {
             if (error){
                 helper.sendJson(req, res, 500, NAME, {
                     message: "Internal Server Error.|" + error.message

@@ -1,7 +1,7 @@
 const mssql = require('mssql');
 const settings = require('../../settings');
 
-exports.find = (etd, callback) => {
+exports.find = (filter, callback) => {
     const pool = new mssql.ConnectionPool(settings.dbRemoteSrv);
         pool.connect()
         .then(()=> {
@@ -16,10 +16,22 @@ exports.find = (etd, callback) => {
             commandText +="ISNULL(PortOfLoadingCode,'') AS PortOfLoadingCode, ISNULL(PortOfLoadingName,'') AS PortOfLoadingName,"
             commandText +="ISNULL(VoyageNo,'') AS VoyageNo, '' AS [Status], '' AS Remark, '' AS Username "
             commandText +="FROM sebl1 "
-            commandText +="WHERE ISNULL(EtdDate, CONVERT(DATE,'19000101',112)) = @etd"
 
+            if (filter.type === 'ref'){
+                commandText += "WHERE CONVERT(VARCHAR(6),ISNULL(EtdDate, CONVERT(DATE, '19000101', 112)),112) = LEFT(@etd,6) ";
+                commandText += "AND (BookingNo LIKE '"+ filter.refno +"%' ";
+                commandText += "OR OBLNo LIKE '"+ filter.refno +"%' ";
+                commandText += "OR BLNo LIKE '"+ filter.refno +"%' ";
+                commandText += "OR ContainerNo LIKE '"+ filter.refno +"%' ";    
+                commandText += "OR MasterJobNo LIKE '"+ filter.refno +"%' ";
+                commandText += "OR JobNo LIKE '"+ filter.refno +"%' ";            
+                commandText += ")";
+            }else {
+                commandText +="WHERE ISNULL(EtdDate, CONVERT(DATE,'19000101',112)) = @etd "
+            }
+            
             const req = new mssql.Request(pool);
-                req.input('etd', mssql.VarChar, etd)
+                req.input('etd', mssql.VarChar, filter.etd)
                 .query(commandText)
                 .then(result => {
                     callback(result.recordset);

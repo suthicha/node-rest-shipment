@@ -117,3 +117,26 @@ exports.signup = (req, res, next) => {
         });
     }
 };
+
+
+exports.update = (req, res, next) => {
+    try {
+        const user = req.body;
+        User.update(user, (data, error) => {
+            if (error) {
+                helper.sendJson(req, res, 500, NAME, { 
+                    message: "Internal Server Error.|" + error.message
+                });
+            } else {
+                helper.sendJson(req, res, 201, NAME, { 
+                    message: "update successfully"
+                });
+            }
+        });
+
+    } catch (e) {
+        helper.sendJson(req, res, 500, NAME, {
+            message: e.message
+        });
+    }
+};

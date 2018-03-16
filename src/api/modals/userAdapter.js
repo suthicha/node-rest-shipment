@@ -65,12 +65,12 @@ exports.insert = (user, callback) => {
         pool.connect()
             .then(()=> {
                 const req = new mssql.Request(pool);
-                    req.input('LoginName', mssql.VarChar, user.loginName)
-                    .input('Password', mssql.VarChar, user.password)
-                    .input('FirstName', mssql.VarChar, user.firstName)
-                    .input('LastName', mssql.VarChar, user.lastName)
-                    .input('Email', mssql.VarChar, user.email)
-                    .input('PhoneNO', mssql.VarChar, user.phoneNo)
+                    req.input('LoginName', mssql.VarChar, user.LoginName)
+                    .input('Password', mssql.VarChar, user.Password)
+                    .input('FirstName', mssql.VarChar, user.FirstName)
+                    .input('LastName', mssql.VarChar, user.LastName)
+                    .input('Email', mssql.VarChar, user.Email)
+                    .input('PhoneNO', mssql.VarChar, user.PhoneNO)
                     .execute('sp_insert_user')
                     .then(result => {
                         callback(result);
@@ -81,6 +81,34 @@ exports.insert = (user, callback) => {
             })
             .catch(error => {
                 error.message = 'Cannot connect database.';
+                callback(null, error);
+            })
+};
+
+exports.update = (user, callback) => {
+    const pool = new mssql.ConnectionPool(settings.dbLocalSrv);
+        pool.connect()
+            .then(()=>{
+                const req = new mssql.Request(pool);
+                req.input('LoginName', mssql.VarChar, user.LoginName)
+                    .input('Password', mssql.VarChar, user.Password)
+                    .input('FirstName', mssql.VarChar, user.FirstName)
+                    .input('LastName', mssql.VarChar, user.LastName)
+                    .input('Email', mssql.VarChar, user.Email)
+                    .input('PhoneNO', mssql.VarChar, user.PhoneNO)
+                    .input('UserGroupID', mssql.Int, user.UserGroupID)
+                    .input('UserID', mssql.Int, user.UserID)
+                    .execute('sp_update_user')
+                    .then(result => {
+                        callback(result);
+                    })
+                    .catch(error => {
+                        callback(null, error);
+                    })
+
+            })
+            .catch(error => {
+                error.message = "Cannot connect local server.";
                 callback(null, error);
             })
 };

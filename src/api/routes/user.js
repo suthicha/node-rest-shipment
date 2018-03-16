@@ -7,5 +7,6 @@ router.get('/:userId', checkAuth, userController.get_user);
 router.get('/all/:userId', checkAuth, userController.get_user_all);
 router.post('/login', userController.login);
 router.post('/signup', userController.signup);
+router.post('/:userId', checkAuth, userController.update);
 
 module.exports = router;

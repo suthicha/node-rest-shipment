@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const bookingRouters = require('./api/routes/bookings');
 const jobRouters = require('./api/routes/jobs');
 const userRouters = require('./api/routes/user');
+const companyRouters = require('./api/routes/company');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use('/user', userRouters);
 app.use('/bookings', bookingRouters);
 app.use('/jobs', jobRouters);
+app.use('/company', companyRouters);
 
 
 // Handler error catching.
