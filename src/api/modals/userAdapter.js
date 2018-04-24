@@ -112,3 +112,46 @@ exports.update = (user, callback) => {
                 callback(null, error);
             })
 };
+
+exports.resetPassword = (user, callback) => {
+    const pool = new mssql.ConnectionPool(settings.dbLocalSrv);
+    pool.connect()
+        .then(()=>{
+            const req = new mssql.Request(pool);
+            req.input('NewPassword', mssql.VarChar, user.NewPassword)
+                .input('UserID', mssql.Int, user.UserID)
+                .execute('sp_reset_password')
+                .then(result => {
+                    callback(result);
+                })
+                .catch(error => {
+                    callback(null, error);
+                })
+
+        })
+        .catch(error => {
+            error.message = "Cannot connect local server.";
+            callback(null, error);
+        })
+};
+
+exports.delete = (userId, callback) => {
+    const pool = new mssql.ConnectionPool(settings.dbLocalSrv);
+    pool.connect()
+        .then(()=>{
+            const req = new mssql.Request(pool);
+            req.input('UserID', mssql.Int, userId)
+                .execute('sp_delete_user')
+                .then(result => {
+                    callback(result);
+                })
+                .catch(error => {
+                    callback(null, error);
+                })
+
+        })
+        .catch(error => {
+            error.message = "Cannot connect local server.";
+            callback(null, error);
+        })
+};

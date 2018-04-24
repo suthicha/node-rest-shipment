@@ -106,7 +106,8 @@ exports.signup = (req, res, next) => {
                 });
             } else {
                 helper.sendJson(req, res, 201, NAME, { 
-                    message: "signup user successfully"
+                    message: "signup user successfully",
+                    users: data.recordset
                 });
             }
         });
@@ -140,3 +141,48 @@ exports.update = (req, res, next) => {
         });
     }
 };
+
+exports.resetPassword = (req, res, next) => {
+    try {
+        const user = req.body;
+        User.resetPassword(user, (data, error) => {
+            if (error) {
+                helper.sendJson(req, res, 500, NAME, { 
+                    message: "Internal Server Error.|" + error.message
+                });
+            } else {
+                helper.sendJson(req, res, 201, NAME, { 
+                    message: "reset password successfully"
+                });
+            }
+        });
+
+    } catch (e) {
+        helper.sendJson(req, res, 500, NAME, {
+            message: e.message
+        });
+    }
+};
+
+exports.delete = (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        User.delete(userId, (data, error) => {
+            if (error) {
+                helper.sendJson(req, res, 500, NAME, { 
+                    message: "Internal Server Error.|" + error.message
+                });
+            } else {
+                helper.sendJson(req, res, 201, NAME, { 
+                    message: "delete successfully"
+                });
+            }
+        });
+
+    } catch (e) {
+        helper.sendJson(req, res, 500, NAME, {
+            message: e.message
+        });
+    }
+};
+

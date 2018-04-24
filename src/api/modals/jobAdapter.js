@@ -10,7 +10,7 @@ exports.find = (filter, callback) => {
             commandText +="ISNULL(CustomerName,'') AS CustomerName, ISNULL(UcrNo,'') AS CarrierBookingNo, ISNULL(OBLNo,'') AS OBL, ISNULL(BLNo,'') AS HBL,"
             commandText +="ISNULL(MasterJobNo,'') AS MasterJobNo, ISNULL(DestCode,'') AS DestCode, ISNULL(DestName,'') AS DestName,"
             commandText +="ISNULL(EtdDate, CONVERT(DATE,'19000101',112)) AS DepartureDate, ISNULL(MotherVesselName,'') AS MotherVessel,"
-            commandText +="ISNULL(FeederVesselName,'') AS FeederVessel, ISNULL(EtaDate, CONVERT(DATE,'19000101',112)) AS ArrivalDate,"
+            commandText +="ISNULL(VesselName,'') AS FeederVessel, ISNULL(EtaDate, CONVERT(DATE,'19000101',112)) AS ArrivalDate,"
             commandText +="ISNULL(ContainerNo,'') AS ContainerNo, ISNULL(DeliveryOrderReleaseDate, CONVERT(DATE,'19000101',112)) AS DeliveryDate,"
             commandText +="ISNULL(PortOfDischargeCode,'') AS PortOfDischargeCode, ISNULL(PortOfDischargeName,'') AS PortOfDischargeName,"
             commandText +="ISNULL(PortOfLoadingCode,'') AS PortOfLoadingCode, ISNULL(PortOfLoadingName,'') AS PortOfLoadingName,"

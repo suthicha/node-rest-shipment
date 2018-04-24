@@ -47,12 +47,13 @@ exports.insert_company = (company, callback) => {
 };
 
 exports.update_company = (company, callback) => {
+    console.log('update_company', company)
     const pool = new mssql.ConnectionPool(settings.dbLocalSrv);
         pool.connect()
             .then(()=> {
 
                 const req = new mssql.Request(pool);
-                    req.input('CmpName', mssql.VarChar, company.CmpName)
+                    req.input('CmpName', mssql.NVarChar, company.CmpName)
                     .input('CmpTaxNo', mssql.VarChar, company.CmpTaxNo)
                     .input('CmpBranch', mssql.VarChar, company.CmpBranch)
                     .input('UserID', mssql.Int, company.UserID)
